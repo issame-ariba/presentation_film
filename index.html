@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Présentation de Films</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Présentation de Films</h1>
+
+        <!-- Champ pour entrer le nom du film -->
+        <label for="filmName">Entrez le nom du film ou série :</label>
+        <input type="text" id="filmName" placeholder="ex: Inception, Avatar, Titanic">
+        <button onclick="afficherFilm()">Afficher le film</button>
+
+        <!-- Section pour afficher les informations du film -->
+        <div id="filmInfo" class="film-info">
+            <h2 id="titreFilm"></h2>
+            <img id="afficheFilm" src="" alt="" style="display:none;">
+            <p id="realisateurFilm"></p>
+            <p id="anneeFilm"></p>
+            <p id="genreFilm"></p>
+            <p id="synopsisFilm"></p>
+            <a id="lienBandeAnnonce" href="#" target="_blank" style="display:none;">Voir la bande-annonce</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
