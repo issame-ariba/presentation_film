@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails du Film - Présentation de Films</title>
+    <link rel="stylesheet" href="styles.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4533730649457394" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="description" content="Fiche détaillée d'un film">
+    <link rel="canonical" href="film.html">
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <nav class="nav">
+                <a href="index.html" class="brand">Films</a>
+                <div class="spacer"></div>
+                <a href="about.html">À propos</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Confidentialité</a>
+            </nav>
+        </header>
+        <h1 id="detailTitle">Détails</h1>
+        <div id="detailContainer"></div>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4533730649457394" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        (function(){
+            function getParam(name){
+                var p = new URLSearchParams(window.location.search);
+                return p.get(name);
+            }
+            var id = getParam('id');
+            var container = document.getElementById('detailContainer');
+            if (!id) { container.innerHTML = '<p>Film non trouvé.</p>'; return; }
+            var local = window.films && window.films[id];
+            if (local) {
+                document.getElementById('detailTitle').textContent = local.titre;
+                container.innerHTML = '' +
+                    '<img src="' + local.affiche + '" alt="' + local.titre + '">' +
+                    '<p><strong>Réalisateur:</strong> ' + local.realisateur + '</p>' +
+                    '<p><strong>Année:</strong> ' + local.annee + '</p>' +
+                    '<p><strong>Genre:</strong> ' + local.genre + '</p>' +
+                    '<p>' + local.synopsis + '</p>' +
+                    '<p><a class="btn" href="index.html">← Retour</a></p>';
+                return;
+            }
+            var key = getOmdbKey && getOmdbKey();
+            if (!key) { container.innerHTML = '<p>Film non trouvé (ajoutez une clé OMDb).</p>'; return; }
+            fetch('https://www.omdbapi.com/?apikey=' + encodeURIComponent(key) + '&i=' + encodeURIComponent(id) + '&plot=full')
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    if (!data || data.Response !== 'True') { container.innerHTML = '<p>Film non trouvé.</p>'; return; }
+                    document.getElementById('detailTitle').textContent = data.Title || '';
+                    var poster = (data.Poster && data.Poster !== 'N/A') ? data.Poster : '';
+            var placeholder = (window.getPlaceholderPoster ? window.getPlaceholderPoster() : '');
+            container.innerHTML = '' +
+                (poster ? ('<img loading="lazy" src="' + poster + '" alt="' + (data.Title||'') + '" onerror="this.onerror=null;this.src=\'' + placeholder + '\';">') : '') +
+                        (data.Director ? ('<p><strong>Réalisateur:</strong> ' + data.Director + '</p>') : '') +
+                        (data.Year ? ('<p><strong>Année:</strong> ' + data.Year + '</p>') : '') +
+                        (data.Genre ? ('<p><strong>Genre:</strong> ' + data.Genre + '</p>') : '') +
+                        (data.Plot ? ('<p>' + data.Plot + '</p>') : '') +
+                        '<p><a class="btn" href="index.html">← Retour</a></p>';
+                })
+                .catch(function(){ container.innerHTML = '<p>Erreur de chargement.</p>'; });
+        })();
+    </script>
+</body>
+</html>
+

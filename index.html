@@ -3,15 +3,56 @@
 <head>
     <title>Présentation de Films</title>
     <link rel="stylesheet" href="styles.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4533730649457394" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
+        <header class="site-header">
+            <nav class="nav">
+                <a href="index.html" class="brand">Films</a>
+                <div class="spacer"></div>
+                <a href="about.html">À propos</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Confidentialité</a>
+            </nav>
+        </header>
         <h1>Présentation de Films</h1>
 
         <!-- Champ pour entrer le nom du film -->
         <label for="filmName">Entrez le nom du film ou série :</label>
-        <input type="text" id="filmName" placeholder="ex: Inception, Avatar, Titanic">
+        <input type="text" id="filmName" list="filmSuggestions" placeholder="ex: Inception, Avatar, Titanic">
+        <datalist id="filmSuggestions"></datalist>
         <button onclick="afficherFilm()">Afficher le film</button>
+
+        <!-- Filtres -->
+        <div class="filters">
+            <select id="filterGenre"></select>
+            <select id="filterYear"></select>
+            <select id="sortSelect">
+                <option value="">Tri: défaut</option>
+                <option value="title-asc">Titre A → Z</option>
+                <option value="title-desc">Titre Z → A</option>
+                <option value="year-asc">Année ↑</option>
+                <option value="year-desc">Année ↓</option>
+            </select>
+            <button id="themeToggle" class="btn" type="button">Mode sombre</button>
+            <button id="settingsToggle" class="btn" type="button">Paramètres</button>
+            <div id="advancedControls" class="advanced" style="display:none; grid-column: 1 / -1;">
+                <input id="omdbKey" type="password" placeholder="Clé OMDb" style="width:220px;">
+                <button id="saveOmdbKey" class="btn" type="button">Sauvegarder clé</button>
+            </div>
+        </div>
+
+        <!-- Publicité AdSense (responsive) -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4533730649457394"
+             data-ad-slot="0000000000"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
 
         <!-- Section pour afficher les informations du film -->
         <div id="filmInfo" class="film-info">
@@ -23,6 +64,26 @@
             <p id="synopsisFilm"></p>
             <a id="lienBandeAnnonce" href="#" target="_blank" style="display:none;">Voir la bande-annonce</a>
         </div>
+
+        <!-- Galerie -->
+        <div id="quickCats" style="margin:10px 0; display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn" data-cat="action" type="button">Action</button>
+            <button class="btn" data-cat="drama" type="button">Drame</button>
+            <button class="btn" data-cat="sci-fi" type="button">Science‑fiction</button>
+            <button class="btn" data-cat="comedy" type="button">Comédie</button>
+            <button class="btn" data-cat="horror" type="button">Horreur</button>
+        </div>
+        <div id="loader" class="loader" style="display:none;">Chargement…</div>
+        <h2>Tous les titres</h2>
+        <div id="gallery" class="gallery"></div>
+        <div id="pagination" style="margin-top:12px; display:flex; gap:8px;">
+            <button id="prevPage" class="btn" type="button">Précédent</button>
+            <button id="nextPage" class="btn" type="button">Suivant</button>
+        </div>
+
+        <!-- Favoris -->
+        <h2>Mes favoris</h2>
+        <div id="favorites" class="favorites"></div>
     </div>
 
     <script src="script.js"></script>
